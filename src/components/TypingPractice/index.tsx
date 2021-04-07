@@ -9,14 +9,23 @@ import { TypingPracticeContext } from "../../App";
 
 export const TypingPractice = () => {
     const context = useContext(TypingPracticeContext);
-    const [text, setText] = useState<string>();
+    // const [text, setText] = useState<string>();
     const [start, setStart] = useState<number>(0);
-    const userText = document.getElementById("userText");
+    const [userInput, setUserInput] = useState<string>();
+    // const userText = document.getElementById("userText");
     const stringCheck = context.generatedText;
 
-    if (typeof context.generatedText === "string") {
+    if (
+        typeof context.generatedText === "string" &&
+        typeof userInput === "string"
+    ) {
         console.log("stringCheck.length: ", stringCheck!.length);
         console.log("stringCheck split: ", stringCheck!.split(""));
+        console.log("user input split: ", userInput!.split(""));
+        const generatedTextSplit = stringCheck!.split("");
+        const userTextSplit = userInput!.split("");
+        // handleChange(evt) {
+        // setState({value: evt.target.value})
     }
 
     // console.log("stringCheck: ", stringCheck!.length);
@@ -35,9 +44,13 @@ export const TypingPractice = () => {
         <div className="TypingPracticeComponent">
             <div className="user-input">
                 {/* user input + setTime, progress and accuracy. Mismatches to have highlight class added */}
-                <textarea id="userText"></textarea>
+                <textarea
+                    id="userText"
+                    // type="text"
+                    onChange={(evt) => setUserInput(evt.target.value)}
+                    value={userInput}
+                ></textarea>
             </div>
-            {context.generatedText}
         </div>
     );
 };

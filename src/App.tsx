@@ -2,7 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import { ProgressBar } from "./components/ProgressBar/";
 import { TypingPractice } from "./components/TypingPractice";
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext, useCallback } from "react";
 
 // export const TypingPracticeContext = createContext({
 //     generatedText: null,
@@ -12,7 +12,7 @@ import { useState, useEffect, createContext } from "react";
 
 type ContextProps = {
     generatedText: string;
-    // userText: string | null;
+    userText: string | null;
     typingProgress: number;
     startTime: number;
 };
@@ -39,15 +39,22 @@ function App() {
                     });
                 }
             })
-
             .catch((err) => {
                 console.log("error fetching text from litispum API: ", err);
                 setError(true);
             });
     };
 
+    const loadAPIText = () => {
+        getAPIText();
+        setUserInput("");
+        setStart(0);
+    };
+
     useEffect(() => {
         getAPIText();
+        setUserInput("");
+        setStart(0);
     });
 
     return (
@@ -55,7 +62,7 @@ function App() {
             <TypingPracticeContext.Provider
                 value={{
                     generatedText: text,
-                    // userText: userInput,
+                    userText: userInput,
                     typingProgress: percentage,
                     startTime: start,
                 }}
@@ -64,8 +71,10 @@ function App() {
                     <img src={logo} className="App-logo" alt="logo" />
                     <p style={{ color: "black" }}>ProgressBar:</p>
                     <ProgressBar percentage={66} />
-                    {text}
-                    <button onClick={getAPIText}>LOAD</button>
+                    <div className="API-text">{text}</div>
+                    <button className="load-text" onClick={loadAPIText}>
+                        LOAD
+                    </button>
                     <TypingPractice />
                 </header>
             </TypingPracticeContext.Provider>

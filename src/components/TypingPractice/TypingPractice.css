@@ -4,7 +4,10 @@
 
 #userText {
     height: 250px;
-    width: 85vw;
+    width: 88vw;
     font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
         "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    resize: none;
+    padding: 0.7rem 0.7rem;
+    border-radius: 5px;
 }
