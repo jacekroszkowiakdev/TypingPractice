@@ -2,17 +2,12 @@ import "./TypingPractice.css";
 import { useContext, useState, useCallback } from "react";
 import { TypingPracticeContext } from "../../App";
 
-// type TypingPracticeVariables = {
-//     userText: string | null;
-//     stringCheck: string | null;
-// };
-
 export const TypingPractice = () => {
     const context = useContext(TypingPracticeContext);
-    // const [text, setText] = useState<string>();
     const [start, setStart] = useState<number>(0);
     const [userInput, setUserInput] = useState<string>();
-    // const userText = document.getElementById("userText");
+    const [misspellCount, setMisspellCount] = useState<number | null>(0);
+    const [remainigChars, setRemaingChars] = useState<number | null>(0);
     const stringCheck = context.generatedText;
 
     if (
@@ -22,31 +17,45 @@ export const TypingPractice = () => {
         console.log("stringCheck.length: ", stringCheck!.length);
         console.log("stringCheck split: ", stringCheck!.split(""));
         console.log("user input split: ", userInput!.split(""));
-        const generatedTextSplit = stringCheck!.split("");
-        const userTextSplit = userInput!.split("");
-        // handleChange(evt) {
-        // setState({value: evt.target.value})
+        const generatedTextSplit: string[] = stringCheck!.split("");
+        const userTextSplit: string[] = userInput!.split("");
+        let finished: boolean = false;
+
+        const countMistakes = useCallback(() => {
+            setMisspellCount(misspellCount);
+        }, [misspellCount]);
+
+        generatedTextSplit.forEach((characterGenerated, index) => {
+            const characterTyped = userTextSplit[index];
+            if (characterTyped == null) {
+                console.log("Remained untyped characters: ");
+            } else if (characterTyped === characterGenerated) {
+                // characterTyped.classList.add("correct");
+                // characterTyped.classList.remove("misspell");
+                console.log("CORRECT");
+            } else {
+                // characterTyped.classList.remove("correct");
+                // characterTyped.classList.add("misspell");
+                console.log("MISSPELL");
+                countMistakes();
+            }
+
+            if (userTextSplit.length === generatedTextSplit.length) {
+                finished = true;
+                console.log("TYPING COMPLETED!");
+                // screen showing how the used did with the Typing
+            }
+        });
     }
-
-    // console.log("stringCheck: ", stringCheck!.length);
-    // console.log("stringCheck split: ", stringCheck!.split(""));
-
-    //  userText.addEventListener("input", function () {
-    //      // console.log("logging input event");
-
-    //      var userInput = userText.value;
-    //      console.log("text:", userInput);
-    //      var swapInput = gettysburgAddress.substring(0, userInput.length);
-    //      userText.value = swapInput;
-    //  });
 
     return (
         <div className="TypingPracticeComponent">
             <div className="user-input">
+                <div className="misspellCounter">mistakes: {misspellCount}</div>
+
                 {/* user input + setTime, progress and accuracy. Mismatches to have highlight class added */}
                 <textarea
                     id="userText"
-                    // type="text"
                     onChange={(evt) => setUserInput(evt.target.value)}
                     value={userInput}
                 ></textarea>
