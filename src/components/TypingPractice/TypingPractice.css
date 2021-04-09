@@ -11,3 +11,9 @@
     padding: 0.7rem 0.7rem;
     border-radius: 5px;
 }
+
+.misspell {
+    color: red;
+    text-decoration-line: overline underline red;
+    text-decoration-style: wavy;
+}

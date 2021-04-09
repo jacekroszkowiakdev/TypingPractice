@@ -10,7 +10,8 @@ type ContextProps = {
     userText: string | null;
     typingProgress: number;
     startTime: number;
-    typingTime: number | null;
+    // typingTime: number | null;
+    typingComplete: boolean;
 };
 
 export const TypingPracticeContext = createContext<Partial<ContextProps>>({});
@@ -22,7 +23,10 @@ function App() {
     const [start, setStart] = useState<number>(0);
     const [elapsedTime, setElapsedTime] = useState<number>();
     const [percentage, setPercentage] = useState<number>(0)!;
+    const [finished, setFinished] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
+
+    // console.log("Typing time in App: ", context.typingTime);
 
     const getAPIText = function () {
         fetch(randomTextUrl)
@@ -45,6 +49,7 @@ function App() {
         getAPIText();
         setUserInput("");
         setStart(0);
+        setFinished(true);
     };
 
     useEffect(() => {
@@ -61,7 +66,8 @@ function App() {
                     userText: userInput,
                     typingProgress: percentage,
                     startTime: start,
-                    typingTime: elapsedTime,
+                    // typingTime: elapsedTime,
+                    typingComplete: finished,
                 }}
             >
                 <header className="App-header">
@@ -72,7 +78,6 @@ function App() {
                     <button className="load-text" onClick={loadAPIText}>
                         LOAD
                     </button>
-                    <Timer />
                     <TypingPractice />
                 </header>
             </TypingPracticeContext.Provider>
