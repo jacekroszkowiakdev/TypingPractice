@@ -3,18 +3,14 @@ import "./App.css";
 import { ProgressBar } from "./components/ProgressBar/";
 import { TypingPractice } from "./components/TypingPractice";
 import { useState, useEffect, createContext, useCallback } from "react";
-
-// export const TypingPracticeContext = createContext({
-//     generatedText: null,
-//     typingProgress: null,
-//     startTime: null,
-// });
+import { Timer } from "./components/Timer";
 
 type ContextProps = {
-    generatedText: string;
+    generatedText: string | null;
     userText: string | null;
     typingProgress: number;
     startTime: number;
+    typingTime: number | null;
 };
 
 export const TypingPracticeContext = createContext<Partial<ContextProps>>({});
@@ -24,6 +20,7 @@ function App() {
     const [text, setText] = useState<string>();
     const [userInput, setUserInput] = useState<string>();
     const [start, setStart] = useState<number>(0);
+    const [elapsedTime, setElapsedTime] = useState<number>();
     const [percentage, setPercentage] = useState<number>(0)!;
     const [error, setError] = useState<boolean>(false);
 
@@ -54,7 +51,7 @@ function App() {
         getAPIText();
         setUserInput("");
         setStart(0);
-    });
+    }, []);
 
     return (
         <div className="App">
@@ -64,6 +61,7 @@ function App() {
                     userText: userInput,
                     typingProgress: percentage,
                     startTime: start,
+                    typingTime: elapsedTime,
                 }}
             >
                 <header className="App-header">
@@ -74,6 +72,7 @@ function App() {
                     <button className="load-text" onClick={loadAPIText}>
                         LOAD
                     </button>
+                    <Timer />
                     <TypingPractice />
                 </header>
             </TypingPracticeContext.Provider>

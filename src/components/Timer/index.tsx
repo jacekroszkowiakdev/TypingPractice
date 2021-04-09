@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { TypingPracticeContext } from "../../App";
 
 export const Timer = () => {
     const [start, setStart] = useState<number>(0);
@@ -8,7 +9,6 @@ export const Timer = () => {
         setStart(Date.now());
 
         let timer = setInterval(() => {
-            console.log("A second has passed");
             setElapsedTime(getElapsedTime());
         }, 1000);
 
@@ -19,5 +19,5 @@ export const Timer = () => {
         return () => clearInterval(timer);
     }, [start]);
 
-    return <div>Time: {elapsedTime!} seconds</div>;
+    return <div>Time: {elapsedTime} seconds</div>;
 };
